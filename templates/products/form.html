@@ -1,0 +1,258 @@
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    /* ================================================================
+       BOCAMANIA v5.0 - CYBER-INDUSTRIAL ARCHITECTURE (PRODUCT FORM)
+       ================================================================
+    */
+ 
+    :root {
+        --xeneize-blue-core: #071526;
+        --xeneize-blue-dark: #030a14;
+        --xeneize-gold-neon: #FFD700;
+        --xeneize-gold-burn: #b39700;
+        --cyber-white: #f5f7fa;
+        --gray-telemetry: #718096;
+        --neon-glow: 0 0 25px rgba(255, 215, 0, 0.45);
+        --cyber-border: 1px solid rgba(255, 215, 0, 0.15);
+        --transition-sharp: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Global Dynamic System Reset Overrides */
+    nav:not(.cyber-nav), .navbar, header, footer { display: none !important; }
+
+    body {
+        background-color: var(--xeneize-blue-dark);
+        color: var(--cyber-white);
+        font-family: 'Space Grotesk', sans-serif;
+        margin: 0;
+        background-image: 
+            linear-gradient(rgba(3, 10, 20, 0.85), rgba(3, 10, 20, 0.95)),
+            url("{% static 'store/images/boca4.jpeg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* HUD NAVBAR */
+    .cyber-nav {
+        display: flex !important;
+        background: rgba(3, 10, 20, 0.9);
+        backdrop-filter: blur(12px);
+        padding: 0 4%;
+        height: 80px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--xeneize-gold-neon);
+        position: sticky;
+        top: 0;
+        z-index: 99999;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .cyber-logo {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--cyber-white);
+        text-decoration: none;
+        letter-spacing: 5px;
+    }
+
+    .cyber-logo span {
+        color: var(--xeneize-gold-neon);
+        text-shadow: var(--neon-glow);
+    }
+
+    /* WRAPPER ENVIRONMENT */
+    .form-wrapper {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        box-sizing: border-box;
+    }
+
+    /* ADVANCED CONFIGURATOR CARD CONTAINER */
+    .form-container {
+        width: 100%;
+        max-width: 680px;
+        background: var(--xeneize-blue-core);
+        padding: 55px;
+        border: var(--cyber-border);
+        box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+        position: relative;
+        transition: var(--transition-sharp);
+    }
+
+    .form-container:hover {
+        border-color: var(--xeneize-gold-neon);
+        box-shadow: var(--neon-glow);
+    }
+
+    .form-container h1 {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        color: var(--cyber-white);
+        text-transform: uppercase;
+        margin-bottom: 45px;
+        letter-spacing: 3px;
+    }
+
+    /* DYNAMIC DJANGO FORM INJECTION RULES (form.as_p TARGETING) */
+    .form-container p {
+        margin-bottom: 25px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container label {
+        display: block;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #a0aec0;
+        margin-bottom: 10px;
+    }
+
+    /* DYNAMIC DOM ELEMENTS INTERFACE FALLBACK STYLING */
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+        width: 100%;
+        padding: 15px 18px;
+        background: rgba(3, 10, 20, 0.6);
+        border: 1px solid rgba(255, 215, 0, 0.15);
+        color: var(--cyber-white);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 16px;
+        outline: none;
+        box-sizing: border-box;
+        transition: var(--transition-sharp);
+    }
+
+    .form-container input:focus,
+    .form-container textarea:focus,
+    .form-container select:focus {
+        border-color: var(--xeneize-gold-neon);
+        background: rgba(7, 21, 38, 0.9);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+    }
+
+    /* File Ingestion Field System Overrides */
+    .form-container input[type="file"] {
+        background: transparent;
+        border: 1px dashed rgba(255, 215, 0, 0.3);
+        padding: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--gray-telemetry);
+    }
+
+    .form-container input[type="file"]:focus {
+        border-style: solid;
+        border-color: var(--xeneize-gold-neon);
+    }
+
+    /* Matrix Checkboxes Mapping */
+    .form-container input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: var(--xeneize-gold-neon);
+        align-self: flex-start;
+        margin-top: 5px;
+    }
+
+    /* FIELD PIPELINE SUBMIT SWITCH */
+    .btn-submit-product {
+        width: 100%;
+        background: transparent;
+        border: 1px solid var(--xeneize-gold-neon);
+        color: var(--xeneize-gold-neon);
+        padding: 18px;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: var(--transition-sharp);
+        margin-top: 35px;
+        letter-spacing: 2px;
+    }
+
+    .btn-submit-product:hover {
+        background: var(--xeneize-gold-neon);
+        color: var(--xeneize-blue-dark);
+        box-shadow: var(--neon-glow);
+    }
+
+    /* RETREAT PIPELINE CONTROL LINK */
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+        color: var(--gray-telemetry);
+        text-decoration: none;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: var(--transition-sharp);
+    }
+
+    .back-link:hover {
+        color: var(--cyber-white);
+        text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    /* ADAPTIVE ARCHITECTURE RESPONSIVENESS */
+    @media (max-width: 768px) {
+        .cyber-nav { height: auto; padding: 20px 4%; flex-direction: column; gap: 15px; }
+        .form-container { padding: 40px 25px; }
+        .form-container h1 { font-size: 22px; }
+    }
+</style>
+
+<nav class="cyber-nav">
+    <a href="/" class="cyber-logo">BOCA<span>MANIA ADMIN</span></a>
+    <div style="display: flex; align-items: center;">
+        </div>
+</nav>
+
+<div class="form-wrapper">
+
+    <div class="form-container">
+
+        <h1>Product Setup</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn-submit-product">
+                Commit & Create Product
+            </button>
+        </form>
+
+        <a href="/dashboard" class="back-link">// Cancel Operation</a>
+
+    </div>
+
+</div>
+
+<footer class="cyber-footer" style="background: var(--xeneize-blue-dark); border-top: 1px solid rgba(255, 215, 0, 0.2); padding: 50px 4%; text-align: center; font-family: 'Syncopate', sans-serif; font-size: 11px; letter-spacing: 3px; color: #718096;">
+    OFFICIAL ADMIN SYSTEM INSTANCE — XENEIZE COMMAND 2026 // <span style="color: var(--xeneize-gold-neon);">LA MITAD MÁS UNO</span>
+</footer>
+
+{% endblock %}
