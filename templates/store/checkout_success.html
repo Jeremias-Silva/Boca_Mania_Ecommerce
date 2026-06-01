@@ -1,0 +1,324 @@
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --xeneize-blue-core: #071526;
+        --xeneize-blue-dark: #030a14;
+        --xeneize-gold-neon: #FFD700;
+        --xeneize-gold-burn: #b39700;
+        --cyber-white: #f5f7fa;
+        --gray-telemetry: #718096;
+        --neon-glow: 0 0 25px rgba(255, 215, 0, 0.45);
+        --cyber-border: 1px solid rgba(255, 215, 0, 0.15);
+        --transition-sharp: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+        background-color: var(--xeneize-blue-dark) !important;
+        color: var(--cyber-white);
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .success-container {
+        max-width: 650px;
+        margin: 100px auto;
+        padding: 0 24px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .success-title {
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(25px, 6vw, 35px);
+        font-weight: 700;
+        color: var(--cyber-white);
+        margin-top: 30px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .success-subtitle {
+        font-family: 'Syncopate', sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        margin-bottom: 50px;
+        letter-spacing: 2.5px;
+        background: transparent;
+        color: var(--xeneize-gold-neon);
+        border: 1px solid var(--xeneize-gold-neon);
+        padding: 8px 20px;
+        display: inline-block;
+        box-shadow: var(--neon-glow);
+    }
+
+    .premium-success-card {
+        background: var(--xeneize-blue-core);
+        border: var(--cyber-border);
+        padding: 45px;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition-sharp);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .premium-success-card:hover {
+        border-color: var(--xeneize-gold-neon);
+        box-shadow: var(--neon-glow);
+    }
+
+    .premium-success-card::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(255, 215, 0, 0.04),
+            transparent
+        );
+        transform: rotate(45deg);
+        transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+    }
+
+    .premium-success-card:hover::after {
+        left: 100%;
+    }
+
+    .card-section-title {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--cyber-white);
+        letter-spacing: 1.5px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        padding-bottom: 12px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+
+    .info-label {
+        color: #a0aec0;
+        font-weight: 400;
+    }
+
+    .info-value {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--cyber-white);
+    }
+
+    .status-badge-xeneize {
+        font-family: 'Syncopate', sans-serif;
+        color: #00ff66;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        background: rgba(22, 163, 74, 0.1);
+        padding: 5px 14px;
+        border: 1px solid rgba(22, 163, 74, 0.3);
+    }
+
+    .price-highlight {
+        color: var(--xeneize-gold-neon);
+        font-size: 26px;
+        font-weight: 700;
+        text-shadow: var(--neon-glow);
+    }
+
+    .address-box {
+        background: rgba(3, 10, 20, 0.5);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        padding: 18px;
+        color: #e2e8f0;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .btn-boca-primary {
+        background: var(--xeneize-gold-neon);
+        color: var(--xeneize-blue-dark);
+        padding: 18px 32px;
+        font-family: 'Syncopate', sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        border: none;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: var(--transition-sharp);
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        letter-spacing: 1.5px;
+    }
+
+    .btn-boca-primary:hover {
+        background: var(--cyber-white);
+        color: var(--xeneize-blue-dark);
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-boca-secondary {
+        background: transparent;
+        color: var(--cyber-white);
+        padding: 17px 32px;
+        font-family: 'Syncopate', sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: var(--transition-sharp);
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        letter-spacing: 1.5px;
+    }
+
+    .btn-boca-secondary:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--xeneize-gold-neon);
+        border-color: var(--xeneize-gold-neon);
+        box-shadow: var(--neon-glow);
+    }
+
+    .button-gap {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    @media (max-width: 576px) {
+
+        .button-gap {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-boca-primary,
+        .btn-boca-secondary {
+            width: 100%;
+        }
+
+        .premium-success-card {
+            padding: 30px 20px;
+        }
+    }
+</style>
+
+<div class="container success-container">
+
+    <div class="mb-2 d-inline-block" style="position: relative; margin-top: 20px;">
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="80"
+             height="80"
+             fill="var(--xeneize-gold-neon)"
+             class="bi bi-check-circle-fill"
+             viewBox="0 0 16 16"
+             style="filter: drop-shadow(0 0 15px rgba(255,215,0,0.4));">
+
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </svg>
+
+    </div>
+
+    <h1 class="success-title">
+        Payment Confirmed
+    </h1>
+
+    <h2 class="success-subtitle">
+        Thank You for Your Purchase
+    </h2>
+    
+    <div class="premium-success-card mb-5">
+
+        <h3 class="card-section-title">
+            Purchase Details:
+        </h3>
+        
+        <div class="info-row">
+            <span class="info-label">
+                Order Number:
+            </span>
+
+            <span class="info-value">
+                #{{ order.id }}
+            </span>
+        </div>
+        
+        <div class="info-row">
+
+            <span class="info-label">
+                Transaction State:
+            </span>
+
+            <span class="status-badge-xeneize">
+                PAID
+            </span>
+
+        </div>
+
+        <!-- CAD FORMAT -->
+        <div class="info-row mb-4">
+
+            <span class="info-label">
+                Total:
+            </span>
+
+            <span class="info-value price-highlight">
+                CAD ${{ order.total|floatformat:2 }}
+            </span>
+
+        </div>
+
+        <h3 class="card-section-title" 
+            style="font-size: 12px; margin-bottom: 15px;">
+
+            Shipping Address
+
+        </h3>
+
+        <div class="address-box">
+            <!-- {{ order.address }} -->
+            We confirm with you by email. CHECK YOUR EMAIL!
+        </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    <div class="button-gap">
+
+        <a href="{% url 'home' %}" class="btn-boca-primary">
+            Back to Main Page!
+        </a>
+
+        <a href="{% url 'product_list' %}" class="btn-boca-secondary">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
