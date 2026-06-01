@@ -1,0 +1,443 @@
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    /* ================================================================
+       BOCAMANIA v5.0 - CYBER-INDUSTRIAL ARCHITECTURE (PRODUCT DETAIL)
+       ================================================================
+    */
+
+    :root {
+        --xeneize-blue-core: #071526;
+        --xeneize-blue-dark: #030a14;
+        --xeneize-gold-neon: #FFD700;
+        --xeneize-gold-burn: #b39700;
+        --cyber-white: #f5f7fa;
+        --neon-glow: 0 0 25px rgba(255, 215, 0, 0.45);
+        --glass-panel: rgba(7, 21, 38, 0.75);
+        --cyber-border: 1px solid rgba(255, 215, 0, 0.15);
+        --curve-factor: 12px;
+        --transition-sharp: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Global Overrides */
+    nav:not(.cyber-nav), .navbar, header, footer { display: none !important; }
+
+    body {
+        background-color: var(--xeneize-blue-dark);
+        color: var(--cyber-white);
+        font-family: 'Space Grotesk', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(11, 31, 58, 0.2) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 40%);
+    }
+
+    /* HUD NAVBAR */
+    .cyber-nav {
+        display: flex !important;
+        background: rgba(3, 10, 20, 0.9);
+        backdrop-filter: blur(12px);
+        padding: 0 4%;
+        height: 80px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--xeneize-gold-neon);
+        position: sticky;
+        top: 0;
+        z-index: 99999;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .cyber-logo {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--cyber-white);
+        text-decoration: none;
+        letter-spacing: 5px;
+        transition: var(--transition-sharp);
+    }
+
+    .cyber-logo span {
+        color: var(--xeneize-gold-neon);
+        text-shadow: var(--neon-glow);
+    }
+
+    .cyber-logo:hover {
+        letter-spacing: 7px;
+    }
+
+    .cyber-nav-links {
+        display: flex;
+        gap: 35px;
+        align-items: center;
+    }
+
+    .cyber-nav-links a {
+        font-family: 'Syncopate', sans-serif;
+        color: var(--cyber-white);
+        text-decoration: none;
+        font-size: 13px;
+        letter-spacing: 2px;
+        transition: var(--transition-sharp);
+        opacity: 0.7;
+        position: relative;
+        padding: 5px 0;
+    }
+
+    .cyber-nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--xeneize-gold-neon);
+        transition: var(--transition-sharp);
+    }
+
+    .cyber-nav-links a:hover::after {
+        width: 100%;
+    }
+
+    .cyber-nav-links a:hover {
+        opacity: 1;
+        color: var(--xeneize-gold-neon);
+    }
+
+    /* PRODUCT CORE DISPLAY WRAPPER */
+    .product-detail-wrapper {
+        max-width: 1300px;
+        margin: 60px auto;
+        padding: 0 4%;
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    @media (max-width: 992px) {
+        .product-detail-wrapper {
+            grid-template-columns: 1fr;
+            margin: 30px auto;
+            gap: 40px;
+        }
+    }
+
+    /* IMAGE INDUSTRIAL VIEWPORT */
+    .image-container {
+        background: radial-gradient(circle, #0f2747 0%, #030a14 100%);
+        border: var(--cyber-border);
+        padding: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 550px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .image-container::before {
+        content: '// PRODUCT VISUALIZATION';
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 10px;
+        color: var(--xeneize-gold-neon);
+        letter-spacing: 2px;
+    }
+
+    .image-container img {
+        max-width: 85%;
+        max-height: 450px;
+        object-fit: contain;
+        filter: drop-shadow(0 20px 35px rgba(0,0,0,0.7));
+        transition: var(--transition-sharp);
+    }
+
+    .image-container:hover img {
+        transform: scale(1.06) rotate(1deg);
+    }
+
+    /* TECHNICAL METADATA PANEL */
+    .info-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-container h1 {
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(32px, 4vw, 48px);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin: 0 0 20px 0;
+        color: var(--cyber-white);
+        text-transform: uppercase;
+    }
+
+    .price-tag {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--xeneize-gold-neon);
+        text-shadow: var(--neon-glow);
+        margin-bottom: 35px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .price-tag::before {
+        content: "PRICE //";
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: #718096;
+        letter-spacing: 2px;
+    }
+
+    /* HISTORIC CHRONICLE BOX */
+    .description-box {
+        background: var(--xeneize-blue-core);
+        border-left: 3px solid var(--xeneize-gold-neon);
+        padding: 30px;
+        margin-bottom: 35px;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .description-box h3 {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin: 0 0 15px 0;
+        color: var(--xeneize-gold-neon);
+        letter-spacing: 2px;
+    }
+
+    .description-box p {
+        color: #a0aec0;
+        line-height: 1.8;
+        font-size: 16px;
+        margin: 0;
+        text-align: justify;
+    }
+
+    /* QUANTITY AND STOCK MATRIX */
+    .inventory-status {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #718096;
+        margin-bottom: 35px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .stock-count {
+        color: #00ff66;
+        background: rgba(0, 255, 102, 0.1);
+        padding: 6px 14px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        border: 1px dashed rgba(0, 255, 102, 0.3);
+    }
+
+    /* ACQUISITION COMMAND INTERFACE */
+    .purchase-form {
+        background: rgba(3, 10, 20, 0.5);
+        border: var(--cyber-border);
+        padding: 30px;
+    }
+
+    .form-row {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .form-row label {
+        font-family: 'Syncopate', sans-serif;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 2px;
+        color: var(--cyber-white);
+    }
+
+    .quantity-input {
+        background: var(--xeneize-blue-dark);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        color: var(--xeneize-gold-neon);
+        padding: 12px;
+        width: 90px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        outline: none;
+        transition: var(--transition-sharp);
+    }
+
+    .quantity-input:focus {
+        border-color: var(--xeneize-gold-neon);
+        box-shadow: var(--neon-glow);
+    }
+
+    .btn-add-cart {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background: transparent;
+        border: 1px solid var(--xeneize-gold-neon);
+        color: var(--xeneize-gold-neon);
+        padding: 20px 30px;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 13px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: var(--transition-sharp);
+        box-sizing: border-box;
+    }
+
+    .btn-add-cart:hover {
+        background: var(--xeneize-gold-neon);
+        color: var(--xeneize-blue-dark);
+        box-shadow: var(--neon-glow);
+    }
+
+    .btn-add-cart span.arrow {
+        transition: var(--transition-sharp);
+    }
+
+    .btn-add-cart:hover span.arrow {
+        transform: translateX(8px);
+    }
+
+    /* CYBER FOOTER */
+    .cyber-footer {
+        background: var(--xeneize-blue-dark);
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+        padding: 50px 4%;
+        text-align: center;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: #718096;
+        margin-top: 100px;
+    }
+
+    .cyber-footer span {
+        color: var(--xeneize-gold-neon);
+    }
+</style>
+
+<nav class="cyber-nav">
+    <a href="{% url 'home' %}" class="cyber-logo">BOCA<span>MANIA</span></a>
+    <div class="cyber-nav-links">
+        <a href="{% url 'product_list' %}">Store</a>
+<!-- LINE 349 UPDATED: CORRECT -->
+<a href="{% url 'cart_detail' %}" style="color: var(--xeneize-gold-neon);">My Cart</a>    </div>
+</nav>
+
+<div class="product-detail-wrapper">
+
+    <div class="image-container">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <div style="color: var(--xeneize-gold-neon); font-family: 'Syncopate', sans-serif; font-size: 14px; letter-spacing: 2px;">NO VISUAL DATA AVAILABLE</div>
+        {% endif %}
+    </div>
+
+    <div class="info-container">
+        <h1>{{ product.name }}</h1>
+
+        <div class="price-tag">${{ product.price }}</div>
+
+        <div class="description-box">
+            <h3>// Product Description</h3>
+            <p>{{ product.description }}</p>
+        </div>
+
+        <div class="inventory-status">
+            In Stock: <span class="stock-count" id="stock-display">{{ product.stock }} Units Available</span>
+        </div>
+
+        <form id="cyber-cart-form" method="POST" action="{% url 'add_to_cart' product.id %}" class="purchase-form">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <label>Quantity</label>
+                <input type="number" id="quantity-val" name="quantity" value="1" min="1" class="quantity-input">
+            </div>
+
+            <button type="submit" class="btn-add-cart">
+                Add to Cart <span class="arrow">→</span>
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<footer class="cyber-footer">
+    OFFICIAL ARCHIVE RECOVERY - REPUBLICA DE LA BOCA © 2026. POWERED BY <span>XENEIZE INTELLIGENCE</span>.
+</footer>
+
+<!-- 🟢 UNIFIED SCRIPT BLOCK WITH ITS STRUCTURAL AJAX LOGIC -->
+<script>
+document.getElementById('cyber-cart-form').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent aggressive page reload
+
+    const form = this;
+    const url = form.action;
+    const formData = new FormData(form);
+
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 1. Update the real-time stock display on screen
+            document.getElementById('stock-display').innerText = data.new_stock;
+            
+            // 2. Optional visual feedback: Temporary alert matching the Xeneize Layout
+            const originalText = form.querySelector('.btn-add-cart').innerHTML;
+            form.querySelector('.btn-add-cart').innerHTML = 'ADDED TO MANIA! ✓';
+            form.querySelector('.btn-add-cart').style.borderColor = '#00ff66';
+            form.querySelector('.btn-add-cart').style.color = '#00ff66';
+            
+            setTimeout(() => {
+                form.querySelector('.btn-add-cart').innerHTML = originalText;
+                form.querySelector('.btn-add-cart').style.borderColor = '';
+                form.querySelector('.btn-add-cart').style.color = '';
+            }, 2000);
+
+            // Reset the quantity input back to 1
+            document.getElementById('quantity-val').value = 1;
+        } else {
+            alert(data.message || 'Error processing request.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to communicate data with the server.');
+    });
+});
+</script>
+{% endblock %}
