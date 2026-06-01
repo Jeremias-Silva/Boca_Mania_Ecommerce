@@ -1,0 +1,1563 @@
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* ================================================================
+       BOCAMANIA v5.8 - COMMAND HUB & HALF-SCREEN STADIUM RADAR 50/50
+       ================================================================
+    */
+    :root {
+        --xeneize-blue-core: #071526;
+        --xeneize-blue-dark: #030a14;
+        --xeneize-gold-neon: #FFD700;
+        --xeneize-gold-burn: #b39700;
+        --cyber-white: #f5f7fa;
+        --gray-telemetry: #718096;
+        --danger-neon: #ff3333;
+        --success-neon: #00ffcc;
+        --neon-glow: 0 0 25px rgba(255, 215, 0, 0.45);
+        --cyber-border: 1px solid rgba(255, 215, 0, 0.15);
+        --curve-factor: 0px; /* Flat industrial style */
+        --transition-sharp: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Override Global Resets */
+    nav:not(.cyber-nav), .navbar, header, footer { display: none !important; }
+
+    body {
+        background-color: var(--xeneize-blue-dark);
+        color: var(--cyber-white);
+        font-family: 'Space Grotesk', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: 
+            radial-gradient(circle at 10% 20%, rgba(11, 31, 58, 0.2) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 40%);
+    }
+
+    /* UNIFIED HUD NAVBAR */
+    .cyber-nav {
+        display: flex !important;
+        background: rgba(3, 10, 20, 0.9);
+        backdrop-filter: blur(12px);
+        padding: 0 4%;
+        height: 80px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--xeneize-gold-neon);
+        position: sticky;
+        top: 0;
+        z-index: 99999;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .cyber-logo {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--cyber-white);
+        text-decoration: none;
+        letter-spacing: 5px;
+    }
+
+    .cyber-logo span {
+        color: var(--xeneize-gold-neon);
+        text-shadow: var(--neon-glow);
+    }
+
+    .cyber-nav-links {
+        display: flex;
+        gap: 35px;
+        align-items: center;
+    }
+
+    .cyber-nav-links a {
+        font-family: 'Syncopate', sans-serif;
+        color: var(--cyber-white);
+        text-decoration: none;
+        font-size: 13px;
+        letter-spacing: 2px;
+        transition: var(--transition-sharp);
+        opacity: 0.7;
+        position: relative;
+        padding: 5px 0;
+    }
+
+    .cyber-nav-links a:hover {
+        opacity: 1;
+        color: var(--xeneize-gold-neon);
+    }
+
+    .cyber-nav-links a.active {
+        opacity: 1 !important;
+        color: var(--xeneize-gold-neon) !important;
+        border-bottom: 2px solid var(--xeneize-gold-neon);
+        text-shadow: var(--neon-glow);
+        background: linear-gradient(180deg, transparent 20%, rgba(255, 215, 0, 0.9) 100%);
+        padding-bottom: 3px;
+    }
+
+    .account-wrapper {
+        max-width: 1600px;
+        margin: 50px auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    /* HUD HEADER */
+    .account-header {
+        background: var(--xeneize-blue-core);
+        padding: 40px;
+        border: 2px solid var(--xeneize-gold-neon);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--neon-glow);
+        margin-bottom: 40px;
+    }
+
+    .header-info h1 {
+        margin: 0;
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(20px, 4vw, 38px);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+    .header-info p {
+        margin: 10px 0 0 0;
+        font-size: 14px;
+        font-family: 'Syncopate', sans-serif;
+        color: var(--xeneize-gold-neon);
+        letter-spacing: 1px;
+    }
+
+    .status-badge {
+        background: rgba(3, 10, 20, 0.9);
+        padding: 15px 25px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        text-align: right;
+    }
+
+    /* TACTICAL GRID RECONFIGURED TO 50/50 EXPRESS EXTENSION */
+    .tactical-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    @media (max-width: 1200px) {
+        .tactical-grid { grid-template-columns: 1fr; }
+    }
+
+    /* MODULE COMPONENT BOX */
+    .cyber-panel {
+        background: var(--xeneize-blue-core);
+        border: var(--cyber-border);
+        padding: 35px;
+        position: relative;
+        box-sizing: border-box;
+        height: 100%;
+    }
+
+    .panel-title {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 14px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-top: 0;
+        margin-bottom: 25px;
+        border-left: 3px solid var(--xeneize-gold-neon);
+        padding-left: 15px;
+        color: var(--cyber-white);
+    }
+
+    /* HALF-SCREEN LA BOMBONERA VIEWPORT SYSTEM */
+    .stadium-viewport-half {
+        background: rgba(3, 10, 20, 0.7);
+        border: 2px dashed rgba(255, 215, 0, 0.3);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 480px;
+        box-sizing: border-box;
+    }
+
+    .bombonera-svg {
+        width: 100%;
+        max-width: 520px;
+        height: auto;
+    }
+
+    .sector-poly {
+        fill: rgba(7, 21, 38, 0.85);
+        stroke: rgba(255, 215, 0, 0.4);
+        stroke-width: 2;
+        cursor: pointer;
+        transition: var(--transition-sharp);
+    }
+
+    .sector-poly:hover {
+        fill: rgba(255, 215, 0, 0.25);
+        stroke: var(--xeneize-gold-neon);
+        filter: drop-shadow(0 0 12px var(--xeneize-gold-neon));
+    }
+
+    .sector-poly.active-selection {
+        fill: rgba(255, 215, 0, 0.55) !important;
+        stroke: var(--xeneize-gold-neon) !important;
+    }
+
+    .stadium-telemetry-box {
+        width: 100%;
+        margin-top: 30px;
+        background: var(--xeneize-blue-dark);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    /* RIGHT COLUMN NESTED MODULES split */
+    .right-modules-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* INPUT ARCHITECTURE */
+    .todo-input-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .cyber-input {
+        background: rgba(3, 10, 20, 0.8);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        color: var(--cyber-white);
+        padding: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .cyber-input:focus {
+        outline: none;
+        border-color: var(--xeneize-gold-neon);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+
+    /* ACTION BUTTON MATRIX */
+    .btn-action {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        background: transparent;
+        border: 1px solid var(--xeneize-gold-neon);
+        color: var(--xeneize-gold-neon);
+        padding: 16px 20px;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 11px;
+        letter-spacing: 2px;
+        cursor: pointer;
+        text-decoration: none;
+        text-transform: uppercase;
+        box-sizing: border-box;
+        transition: var(--transition-sharp);
+    }
+
+    .btn-action:hover {
+        background: var(--xeneize-gold-neon);
+        color: var(--xeneize-blue-dark);
+        box-shadow: var(--neon-glow);
+    }
+
+    /* REALTIME TRANSACTIONS LIST LOGS */
+    .logs-table-wrapper {
+        overflow-x: auto;
+        margin-top: 15px;
+        max-height: 200px;
+    }
+
+    .logs-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .logs-table th {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 10px;
+        color: var(--gray-telemetry);
+        padding: 12px;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+        letter-spacing: 1px;
+        position: sticky;
+        top: 0;
+        background: var(--xeneize-blue-core);
+    }
+
+    .logs-table td {
+        padding: 14px 12px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+    }
+
+    .logs-table tr:hover {
+        background: rgba(3, 10, 20, 0.4);
+    }
+
+    /* DYNAMIC CHART MODULE */
+    .chart-container-box {
+        background: rgba(3, 10, 20, 0.6);
+        border: 1px solid rgba(255, 215, 0, 0.15);
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    /* TO-DO TASK LIST STYLING */
+    .todo-list { list-style: none; padding: 0; margin: 0; }
+    .todo-item {
+        display: flex; justify-content: space-between; align-items: center;
+        background: rgba(3, 10, 20, 0.4); border: 1px solid rgba(255, 215, 0, 0.1);
+        padding: 12px 15px; margin-bottom: 10px; transition: var(--transition-sharp);
+    }
+    
+    .todo-item.task-completed {
+        border-color: rgba(0, 255, 204, 0.3);
+        background: rgba(0, 255, 204, 0.03);
+    }
+    
+    .todo-item.task-completed .todo-title {
+        text-decoration: line-through;
+        color: var(--gray-telemetry);
+    }
+
+    .todo-title { font-weight: 700; text-transform: uppercase; }
+    .todo-meta-text { font-size: 12px; color: var(--xeneize-gold-neon); }
+
+    .btn-todo-del, .btn-todo-check {
+        background: transparent; border: none; cursor: pointer; transition: var(--transition-sharp);
+    }
+    .btn-todo-del { color: var(--gray-telemetry); font-size: 15px; }
+    .btn-todo-del:hover { color: var(--danger-neon); }
+    .btn-todo-check { color: var(--gray-telemetry); font-size: 15px; margin-right: 10px; }
+    .btn-todo-check:hover { color: var(--success-neon); transform: scale(1.15); }
+    
+    .todo-item.task-completed .btn-todo-check {
+        color: var(--success-neon);
+    }
+
+    .telemetry-summary-box {
+        background: rgba(3, 10, 20, 0.8); border: 1px solid var(--xeneize-gold-neon); padding: 15px;
+    }
+
+    .logout-zone { text-align: center; padding: 40px 0; border-top: var(--cyber-border); }
+    .btn-terminate {
+        color: var(--danger-neon); font-family: 'Syncopate', sans-serif; font-size: 11px;
+        text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
+    }
+
+    .cyber-footer {
+        background: var(--xeneize-blue-dark); border-top: 1px solid rgba(255, 215, 0, 0.2);
+        padding: 40px 4%; text-align: center; font-family: 'Syncopate', sans-serif;
+        font-size: 11px; letter-spacing: 3px; color: #718096; margin-top: 60px;
+    }
+
+    /* ================================================================
+       MODERN CALCULATOR POP-UP (XENEIZE SHIELD STYLE)
+       ================================================================
+    */
+    .calc-popup-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(3, 10, 20, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .calc-popup-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .calc-container {
+        background: var(--xeneize-blue-core);
+        border: 3px solid var(--xeneize-gold-neon);
+        box-shadow: var(--neon-glow);
+        width: 340px;
+        padding: 25px;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .calc-container::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 42%; width: 100%; height: 50px;
+        background: rgba(255, 215, 0, 0.06);
+        border-top: 1px dashed rgba(255, 215, 0, 0.2);
+        border-bottom: 1px dashed rgba(255, 215, 0, 0.2);
+        pointer-events: none;
+    }
+
+    .calc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        padding-bottom: 10px;
+    }
+
+    .calc-title {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--xeneize-gold-neon);
+        margin: 0;
+    }
+
+    .calc-close-btn {
+        background: transparent;
+        border: none;
+        color: var(--gray-telemetry);
+        font-size: 18px;
+        cursor: pointer;
+        transition: var(--transition-sharp);
+    }
+
+    .calc-close-btn:hover {
+        color: var(--danger-neon);
+    }
+
+    .calc-display {
+        background: var(--xeneize-blue-dark);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        padding: 15px;
+        text-align: right;
+        font-size: 24px;
+        font-family: 'Space Grotesk', sans-serif;
+        color: var(--cyber-white);
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+        min-height: 35px;
+        overflow-x: auto;
+    }
+
+    .calc-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .calc-btn {
+        background: rgba(3, 10, 20, 0.6);
+        border: 1px solid rgba(255, 215, 0, 0.25);
+        color: var(--cyber-white);
+        padding: 15px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        transition: var(--transition-sharp);
+    }
+
+    .calc-btn:hover {
+        background: rgba(255, 215, 0, 0.15);
+        border-color: var(--xeneize-gold-neon);
+    }
+
+    .calc-btn.operator {
+        color: var(--xeneize-gold-neon);
+        font-family: 'Syncopate', sans-serif;
+        font-size: 13px;
+    }
+
+    .calc-btn.clear {
+        color: var(--danger-neon);
+    }
+
+    .calc-btn.equal {
+        background: var(--xeneize-gold-neon);
+        color: var(--xeneize-blue-dark);
+        grid-column: span 2;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 14px;
+    }
+
+    .calc-btn.equal:hover {
+        background: #fff;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+
+    /* BUTTON TO TRIGGER POP-UP */
+    .floating-calc-trigger {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--xeneize-blue-core);
+        border: 2px solid var(--xeneize-gold-neon);
+        color: var(--xeneize-gold-neon);
+        padding: 15px 20px;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 10px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: var(--neon-glow);
+        z-index: 9999;
+        transition: var(--transition-sharp);
+    }
+
+    .floating-calc-trigger:hover {
+        background: var(--xeneize-gold-neon);
+        color: var(--xeneize-blue-dark);
+        transform: translateY(-3px);
+    }
+</style>
+
+<nav class="cyber-nav">
+    <a href="/" class="cyber-logo">BOCA<span>MANIA</span></a>
+    <div class="cyber-nav-links">
+        <a href="{% url 'product_list' %}">Store</a>
+        <a href="/cart/">My Cart</a>
+        <a href="#" class="active">USER Terminal</a>
+    </div>
+</nav>
+
+<div class="account-wrapper">
+
+    <div class="account-header">
+        <div class="header-info">
+            <h1>XNZ DIGITAL ID CORE</h1>
+            <p>XENEIZE MEMBER: {{ user.username }}</p>
+        </div>
+        <div class="status-badge">
+            <span style="display:block; opacity: 0.5; font-size: 9px; font-family:'Syncopate'; margin-bottom:3px;">USER</span>
+            <span style="font-size: 16px; font-weight: 700; color: var(--success-neon);"><i class="fas fa-satellite-dish"></i>  ON-LINE</span>
+        </div>
+    </div>
+
+    <div class="tactical-grid">
+        
+        <div class="cyber-panel">
+            <h2 class="panel-title">La Bombonera Matrix View</h2>
+            <div class="stadium-viewport-half">
+                <svg class="bombonera-svg" viewBox="0 0 500 400">
+                    <path class="sector-poly" d="M100,50 L400,50 L450,120 L50,120 Z" data-sector="North Popular Stand" data-price="45"/>
+                    <path class="sector-poly" d="M450,120 L450,280 L380,350 L400,120 Z" data-sector="East Preferred Seating" data-price="125"/>
+                    <path class="sector-poly" d="M50,280 L120,350 L380,350 L450,280 Z" data-sector="South Stand “La Doce”" data-price="50"/>
+                    <path class="sector-poly" d="M50,120 L100,120 L120,350 L50,280 Z" data-sector="West VIP Boxes" data-price="260"/>
+                    <rect x="140" y="150" width="220" height="100" fill="rgba(0, 255, 204, 0.03)" stroke="rgba(0, 255, 204, 0.3)"/>
+                </svg>
+
+                <div class="stadium-telemetry-box" id="sector-telemetry">
+                    <div id="telemetry-name" style="font-weight:700; color:var(--xeneize-gold-neon); font-family: 'Syncopate'; font-size: 12px; letter-spacing: 1px;">CHOOSE YOUR SECTOR</div>
+                    <button id="btn-buy-sector" class="btn-action" style="margin-top:15px; display:none;">BUY YOUR TICKET</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            </div>
+        </div>
+
+        <div class="right-modules-stack">
+            
+            <div class="cyber-panel">
+                <h2 class="panel-title">PURCHASE INTELLIGENCE MATRIX // ANALYTICS LOG</h2>
+                
+                <div class="chart-container-box">
+                    <canvas id="quantumAnalyticsChart" style="max-height: 140px; width: 100%;"></canvas>
+                </div>
+
+                <div class="logs-table-wrapper">
+                    <table class="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Time / Date</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchase-logs-body">
+                            <tr data-chart-cost="0">
+                
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="cyber-panel">
+                <h2 class="panel-title">XENEIZE Task Control </h2>
+                
+                <div class="todo-input-row">
+                    <div style="display: grid; grid-template-columns: 1fr 90px; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="todo-task-name" class="cyber-input" placeholder="CREATE NEW TASK">
+                        <input type="number" id="todo-qty" class="cyber-input" value="1" min="1" placeholder="QTY">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <input type="text" id="todo-notes" class="cyber-input" style="width: 100%;" placeholder="NOTES ABOUT THE TASK">
+                    </div>
+                    <button id="add-todo-trigger" class="btn-action"><i class="fas fa-terminal"></i> ADD YOUR TASK</button>
+                </div>
+
+                <ul class="todo-list" id="todo-items-container">
+                    <li class="todo-item" style="display: flex; flex-direction: column; align-items: stretch; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="todo-meta">
+                                <span class="todo-title></span><br>
+                        </div>
+                        <div style="font-size: 11px; color: var(--gray-telemetry); border-top: 1px solid rgba(255,215,0,0.1); padding-top: 5px; font-style: italic;"><i class="far fa-comment-alt"></i></div>
+                    </li>
+                </ul>
+
+                <div style="margin-top: 25px;">
+                    <div class="telemetry-summary-box">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="color:var(--gray-telemetry);">Total of Tasks:</span>
+                            <span id="todo-counter-total" style="color:var(--xeneize-gold-neon); font-weight:700;">1</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:14px; border-top:1px dashed rgba(255,215,0,0.2); padding-top:10px;">
+                            <span style="color:var(--gray-telemetry);">Task Completed!</span>
+                            <span id="todo-counter-completed" style="color:var(--success-neon); font-weight:700;">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<button class="floating-calc-trigger" id="open-calc-btn">
+    <i class="fas fa-calculator"></i> CALC XENEIZE
+</button>
+
+<div class="calc-popup-overlay" id="calc-overlay">
+    <div class="calc-container">
+        <div class="calc-header">
+            <h3 class="calc-title"><i class="fas fa-shield-alt"></i> CABJ QUANTUM CALC</h3>
+            <button class="calc-close-btn" id="close-calc-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="calc-display" id="calc-screen">0</div>
+        <div class="calc-grid">
+            <button class="calc-btn clear" onclick="clearScreen()">C</button>
+            <button class="calc-btn operator" onclick="pressKey('/')">/</button>
+            <button class="calc-btn operator" onclick="pressKey('*')">*</button>
+            <button class="calc-btn operator" onclick="pressKey('-')">-</button>
+            
+            <button class="calc-btn" onclick="pressKey('7')">7</button>
+            <button class="calc-btn" onclick="pressKey('8')">8</button>
+            <button class="calc-btn" onclick="pressKey('9')">9</button>
+            <button class="calc-btn operator" onclick="pressKey('+')">+</button>
+            
+            <button class="calc-btn" onclick="pressKey('4')">4</button>
+            <button class="calc-btn" onclick="pressKey('5')">5</button>
+            <button class="calc-btn" onclick="pressKey('6')">6</button>
+            <button class="calc-btn operator" onclick="pressKey('.')">.</button>
+            
+            <button class="calc-btn" onclick="pressKey('1')">1</button>
+            <button class="calc-btn" onclick="pressKey('2')">2</button>
+            <button class="calc-btn" onclick="pressKey('3')">3</button>
+            <button class="calc-btn equal" onclick="calculateResult()">=</button>
+            
+            <button class="calc-btn" style="grid-column: span 2;" onclick="pressKey('0')">0</button>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================
+     LIBERTADORES 2026 REALTIME SIMULATOR MODULE
+========================================================= -->
+<!-- =========================================================
+     ULTRA MODERN GROUP D TABLE — CONMEBOL LIBERTADORES 2026
+     REPLACE YOUR OLD "Dynamic Qualification Table" BLOCK WITH THIS
+========================================================= -->
+
+<div class="cyber-panel ultra-table-panel">
+
+    <div class="ultra-header-zone">
+        <div>
+            <h2 class="panel-title" style="margin-bottom:10px;">
+                GROUP D // CONMEBOL LIBERTADORES 2026
+            </h2>
+
+            <p class="ultra-subtitle">
+                LIVE STANDINGS
+            </p>
+        </div>
+
+        <div class="live-status-pill">
+            <span class="pulse-dot"></span>
+            LIVE TABLE
+        </div>
+    </div>
+
+    <div class="groupd-table-wrapper">
+
+        <table class="groupd-table">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>CLUB</th>
+                    <th>PTS</th>
+                    <th>GF</th>
+                    <th>GA</th>
+                    <th>GD</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+
+            <tbody id="groupd-standings-body">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+
+/* =========================================================
+   ULTRA MODERN GROUP D TABLE
+========================================================= */
+
+.ultra-table-panel{
+    margin-top:40px;
+    border:1px solid rgba(255,215,0,0.25);
+    overflow:hidden;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(7,21,38,0.98),
+            rgba(3,10,20,0.98)
+        );
+    box-shadow:
+        0 0 40px rgba(0,0,0,0.45),
+        0 0 20px rgba(255,215,0,0.05);
+}
+
+.ultra-header-zone{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.ultra-subtitle{
+    margin:0;
+    color:var(--gray-telemetry);
+    font-size:11px;
+    letter-spacing:2px;
+    font-family:'Syncopate', sans-serif;
+}
+
+.live-status-pill{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 18px;
+    background:rgba(0,255,204,0.06);
+    border:1px solid rgba(0,255,204,0.3);
+    color:var(--success-neon);
+    font-family:'Syncopate', sans-serif;
+    font-size:10px;
+    letter-spacing:2px;
+}
+
+.pulse-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--success-neon);
+    box-shadow:0 0 10px var(--success-neon);
+    animation:pulseLive 1.2s infinite;
+}
+
+@keyframes pulseLive{
+    0%{
+        opacity:1;
+        transform:scale(1);
+    }
+    50%{
+        opacity:.3;
+        transform:scale(1.4);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.groupd-table-wrapper{
+    overflow-x:auto;
+}
+
+.groupd-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+.groupd-table thead tr{
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,215,0,0.08),
+            rgba(255,215,0,0.02)
+        );
+}
+
+.groupd-table th{
+    padding:20px 15px;
+    text-align:left;
+    font-size:11px;
+    font-family:'Syncopate', sans-serif;
+    color:var(--xeneize-gold-neon);
+    letter-spacing:2px;
+    border-bottom:1px solid rgba(255,215,0,0.2);
+}
+
+.groupd-table td{
+    padding:18px 15px;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    transition:var(--transition-sharp);
+    font-size:14px;
+}
+
+.groupd-table tbody tr{
+    transition:var(--transition-sharp);
+}
+
+.groupd-table tbody tr:hover{
+    background:rgba(255,215,0,0.05);
+    transform:scale(1.01);
+}
+
+.rank-badge{
+    width:34px;
+    height:34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    font-weight:700;
+    font-size:13px;
+}
+
+.rank-qualified{
+    background:rgba(0,255,204,0.12);
+    border:1px solid rgba(0,255,204,0.35);
+    color:var(--success-neon);
+    box-shadow:0 0 10px rgba(0,255,204,0.15);
+}
+
+.rank-eliminated{
+    background:rgba(255,51,51,0.08);
+    border:1px solid rgba(255,51,51,0.25);
+    color:var(--danger-neon);
+}
+
+.club-cell{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.club-logo{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,215,0,0.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+}
+
+.club-name{
+    font-weight:700;
+    color:var(--cyber-white);
+}
+
+.club-country{
+    font-size:11px;
+    color:var(--gray-telemetry);
+    margin-top:3px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.stat-main{
+    font-weight:700;
+    font-size:16px;
+}
+
+.positive-gd{
+    color:var(--success-neon);
+}
+
+.negative-gd{
+    color:var(--danger-neon);
+}
+
+.status-chip{
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:10px;
+    font-family:'Syncopate', sans-serif;
+    letter-spacing:1px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+}
+
+.status-qualified{
+    background:rgba(0,255,204,0.08);
+    border:1px solid rgba(0,255,204,0.3);
+    color:var(--success-neon);
+}
+
+.status-danger{
+    background:rgba(255,51,51,0.08);
+    border:1px solid rgba(255,51,51,0.25);
+    color:var(--danger-neon);
+}
+
+.group-highlight{
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,255,204,0.03),
+            transparent
+        );
+}
+
+</style>
+
+<script>
+
+/* =========================================================
+   OFFICIAL GROUP D STRUCTURE — CONMEBOL STYLE
+========================================================= */
+
+const groupDTeams = [
+
+    {
+        name: "Boca Juniors",
+        country: "Argentina",
+        logo: "🟦🟨",
+        pts: 10,
+        gf: 9,
+        ga: 5
+    },
+
+    {
+        name: "Universidad Catolica",
+        country: "Ecuador",
+        logo: "⚪🔵",
+        pts: 10,
+        gf: 8,
+        ga: 6
+    },
+
+    {
+        name: "Cruzeiro",
+        country: "Brazil",
+        logo: "🔵⭐",
+        pts: 8,
+        gf: 7,
+        ga: 6
+    },
+
+    {
+        name: "Barcelona SC",
+        country: "Ecuador",
+        logo: "🟡⚫",
+        pts: 4,
+        gf: 3,
+        ga: 10
+    }
+
+];
+
+/* =========================================================
+   CALCULATE GOAL DIFFERENCE
+========================================================= */
+
+groupDTeams.forEach(team => {
+
+    team.gd = team.gf - team.ga;
+
+});
+
+/* =========================================================
+   SORT TABLE
+========================================================= */
+
+groupDTeams.sort((a, b) => {
+
+    if(b.pts !== a.pts){
+
+        return b.pts - a.pts;
+
+    }
+
+    return b.gd - a.gd;
+
+});
+
+/* =========================================================
+   RENDER ULTRA TABLE
+========================================================= */
+
+const groupDBody = document.getElementById(
+    'groupd-standings-body'
+);
+
+groupDTeams.forEach((team, index) => {
+
+    const qualified = index <= 1;
+
+    const row = document.createElement('tr');
+
+    if(qualified){
+
+        row.classList.add('group-highlight');
+
+    }
+
+    row.innerHTML = `
+
+        <td>
+
+            <div class="
+                rank-badge
+                ${qualified
+                    ? 'rank-qualified'
+                    : 'rank-eliminated'}
+            ">
+                ${index + 1}
+            </div>
+
+        </td>
+
+        <td>
+
+            <div class="club-cell">
+
+                <div class="club-logo">
+                    ${team.logo}
+                </div>
+
+                <div>
+
+                    <div class="club-name">
+                        ${team.name}
+                    </div>
+
+                    <div class="club-country">
+                        ${team.country}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </td>
+
+        <td>
+            <span class="stat-main">
+                ${team.pts}
+            </span>
+        </td>
+
+        <td>${team.gf}</td>
+
+        <td>${team.ga}</td>
+
+        <td class="
+            ${team.gd >= 0
+                ? 'positive-gd'
+                : 'negative-gd'}
+        ">
+            <strong>
+                ${team.gd > 0 ? '+' : ''}
+                ${team.gd}
+            </strong>
+        </td>
+
+        <td>
+
+            <span class="
+                status-chip
+                ${qualified
+                    ? 'status-qualified'
+                    : 'status-danger'}
+            ">
+
+                <i class="
+                    fas
+                    ${qualified
+                        ? 'fa-check-circle'
+                        : 'fa-times-circle'}
+                "></i>
+
+                ${qualified
+                    ? 'QUALIFYING'
+                    : 'ELIMINATED'}
+
+            </span>
+
+        </td>
+
+    `;
+
+    groupDBody.appendChild(row);
+
+});
+
+
+</script>
+<div class="logout-zone">
+        <a href="{% url 'logout' %}" class="btn-terminate">
+            <i class="fas fa-power-off"></i> CLOSE USER SESSION
+        </a>
+    </div>
+<footer class="cyber-footer">
+    BOCAMANIA MAIN MATRIX SYSTEM © 2026 // <span style="color: var(--xeneize-gold-neon);">LA MITAD MÁS UNO</span>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- PROTOCOL 1: CHART ENGINE INTEGRATION (CHART.JS) ---
+    const ctx = document.getElementById('quantumAnalyticsChart').getContext('2d');
+    
+    let chartLabels = ['2026-05-25', ''];
+    let chartDataValues = [0, 0];
+
+    const telemetryChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Acquisition Value ($)',
+                data: chartDataValues,
+                borderColor: '#FFD700',
+                backgroundColor: 'rgba(255, 215, 0, 0.05)',
+                borderWidth: 2,
+                pointBackgroundColor: '#00ffcc',
+                pointBorderColor: '#FFD700',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#718096', font: { family: 'Space Grotesk', size: 10 } }, grid: { display: false } },
+                y: { ticks: { color: '#718096', font: { family: 'Space Grotesk', size: 10 } }, grid: { color: 'rgba(255,215,0,0.03)' } }
+            }
+        }
+    });
+
+    function pushDataToTelemetryChart(itemName, price) {
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+        const fullTimestamp = `${dateStr} ${timeStr}`;
+
+        const tbody = document.getElementById('purchase-logs-body');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight:500;">${itemName}</td>
+            <td style="color:var(--gray-telemetry);">${fullTimestamp}</td>
+            <td style="color:var(--xeneize-gold-neon); font-weight:700;">$${price.toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+
+        telemetryChart.data.labels.push(dateStr);
+        telemetryChart.data.datasets[0].data.push(price);
+        telemetryChart.update();
+    }
+
+    // --- PROTOCOL 2: BOMBONERA RADAR DISPATCHER ---
+    const sectors = document.querySelectorAll('.sector-poly');
+    const telName = document.getElementById('telemetry-name');
+    const btnBuySector = document.getElementById('btn-buy-sector');
+    let selectedSectorName = "";
+    let selectedSectorPrice = 0;
+
+    sectors.forEach(sector => {
+        sector.addEventListener('click', function() {
+            sectors.forEach(s => s.classList.remove('active-selection'));
+            this.classList.add('active-selection');
+
+            selectedSectorName = this.getAttribute('data-sector');
+            selectedSectorPrice = parseFloat(this.getAttribute('data-price'));
+
+            telName.innerHTML = `${selectedSectorName} <br><span style="color:var(--cyber-white); font-size:22px;">$${selectedSectorPrice}.00 CAD</span>`;
+            btnBuySector.style.display = "block";
+        });
+    });
+
+    btnBuySector.addEventListener('click', function() {
+        if(selectedSectorPrice > 0) {
+            pushDataToTelemetryChart(`Ticket: ${selectedSectorName}`, selectedSectorPrice);
+            alert(`Target Node Locked: Ticket purchase logged inside profile dashboard!`);
+        }
+    });
+
+    // --- PROTOCOL 3: TO-DO INTERACTIVE SYSTEM MANAGER (FREE TEXT EDITION) ---
+    const addTodoBtn = document.getElementById('add-todo-trigger');
+    const todoTaskInput = document.getElementById('todo-task-name');
+    const todoQtyInput = document.getElementById('todo-qty');
+    const todoNotesInput = document.getElementById('todo-notes');
+    const todoContainer = document.getElementById('todo-items-container');
+
+    addTodoBtn.addEventListener('click', function() {
+        const taskName = todoTaskInput.value.trim();
+        
+        if(taskName === "") {
+            alert('SYSTEM ERROR: Operational task name cannot be empty.');
+            return;
+        }
+
+        const qty = parseInt(todoQtyInput.value) || 1;
+        const notes = todoNotesInput.value.trim();
+
+        const li = document.createElement('li');
+        li.className = 'todo-item';
+        li.style.flexDirection = 'column';
+        li.style.alignItems = 'stretch';
+        li.style.gap = '10px';
+        
+        li.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="todo-meta">
+                    <span class="todo-title">${taskName} <span style="color:var(--xeneize-gold-neon);">[x${qty}]</span></span>
+                    <span class="todo-meta-text" style="display: block; font-size: 11px; margin-top: 2px;">Status: In Progress</span>
+                </div>
+                <div>
+                    <button class="btn-todo-check" title="Toggle Completion Status"><i class="fas fa-check-square"></i></button>
+                    <button class="btn-todo-del" title="Purge Task"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+            ${notes ? `<div style="font-size: 11px; color: var(--gray-telemetry); border-top: 1px solid rgba(255,215,0,0.1); padding-top: 5px; font-style: italic;"><i class="far fa-comment-alt"></i> ${notes}</div>` : ''}
+        `;
+        
+        todoContainer.appendChild(li);
+        
+        // Reset Inputs
+        todoTaskInput.value = '';
+        todoQtyInput.value = 1;
+        todoNotesInput.value = '';
+        
+        updateTaskTelemetryCounters();
+    });
+
+    todoContainer.addEventListener('click', function(e) {
+        const itemRow = e.target.closest('.todo-item');
+        if(!itemRow) return;
+
+        // Delete Task
+        if(e.target.closest('.btn-todo-del')) {
+            itemRow.remove();
+            updateTaskTelemetryCounters();
+        }
+
+        // Toggle Completion Status
+        if(e.target.closest('.btn-todo-check')) {
+            itemRow.classList.toggle('task-completed');
+            const statusText = itemRow.querySelector('.todo-meta-text');
+            if(itemRow.classList.contains('task-completed')) {
+                statusText.innerText = "Status: DONE";
+                statusText.style.color = "var(--success-neon)";
+            } else {
+                statusText.innerText = "Status: In Progress";
+                statusText.style.color = "var(--xeneize-gold-neon)";
+            }
+            updateTaskTelemetryCounters();
+        }
+    });
+
+    // --- PROTOCOL 4: TASK TELEMETRY COUNTER ENGINE ---
+    function updateTaskTelemetryCounters() {
+        const totalTasks = document.querySelectorAll('#todo-items-container .todo-item').length;
+        const completedTasks = document.querySelectorAll('#todo-items-container .todo-item.task-completed').length;
+        
+        document.getElementById('todo-counter-total').innerText = totalTasks;
+        document.getElementById('todo-counter-completed').innerText = completedTasks;
+    }
+
+    // Initial Counter Setup
+    updateTaskTelemetryCounters();
+
+    // --- PROTOCOL 5: POP-UP CALCULATOR CONTROLLER ---
+    const overlay = document.getElementById('calc-overlay');
+    const openBtn = document.getElementById('open-calc-btn');
+    const closeBtn = document.getElementById('close-calc-btn');
+
+    openBtn.addEventListener('click', function() {
+        overlay.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', function() {
+        overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', function(e) {
+        if(e.target === overlay) {
+            overlay.classList.remove('active');
+        }
+    });
+});
+
+
+    // =========================================================
+    // LIBERTADORES 2026 REALTIME ENGINE
+    // =========================================================
+
+    const standingsBody = document.getElementById('standings-body');
+
+    const libertadoresMatches = document.querySelectorAll(
+        '#libertadores-match-list tr'
+    );
+
+    function generateStandings() {
+
+        const clubs = {};
+
+        libertadoresMatches.forEach(match => {
+
+            const homeTeam = match.dataset.home;
+            const awayTeam = match.dataset.away;
+
+            const homeGoals =
+                parseInt(
+                    match.querySelector('.home-score').value
+                ) || 0;
+
+            const awayGoals =
+                parseInt(
+                    match.querySelector('.away-score').value
+                ) || 0;
+
+            // INITIALIZE CLUBS
+
+            if (!clubs[homeTeam]) {
+
+                clubs[homeTeam] = {
+                    points: 0,
+                    gf: 0,
+                    ga: 0
+                };
+
+            }
+
+            if (!clubs[awayTeam]) {
+
+                clubs[awayTeam] = {
+                    points: 0,
+                    gf: 0,
+                    ga: 0
+                };
+
+            }
+
+            // GOALS
+
+            clubs[homeTeam].gf += homeGoals;
+            clubs[homeTeam].ga += awayGoals;
+
+            clubs[awayTeam].gf += awayGoals;
+            clubs[awayTeam].ga += homeGoals;
+
+            // MATCH RESULT
+
+            if (homeGoals > awayGoals) {
+
+                clubs[homeTeam].points += 3;
+
+            } else if (awayGoals > homeGoals) {
+
+                clubs[awayTeam].points += 3;
+
+            } else {
+
+                clubs[homeTeam].points += 1;
+                clubs[awayTeam].points += 1;
+
+            }
+
+        });
+
+        // CONVERT OBJECT TO ARRAY
+
+        const standingsArray = Object.entries(clubs).map(
+            ([clubName, stats]) => {
+
+                return {
+
+                    name: clubName,
+
+                    points: stats.points,
+
+                    gf: stats.gf,
+
+                    ga: stats.ga,
+
+                    gd: stats.gf - stats.ga
+
+                };
+
+            }
+        );
+
+        // SORTING
+
+        standingsArray.sort((a, b) => {
+
+            if (b.points !== a.points) {
+
+                return b.points - a.points;
+
+            }
+
+            return b.gd - a.gd;
+
+        });
+
+        // RENDER TABLE
+
+        standingsBody.innerHTML = '';
+
+        standingsArray.forEach((team, index) => {
+
+            const qualificationColor =
+                index <= 1
+                    ? 'rgba(0,255,204,0.08)'
+                    : 'transparent';
+
+            const row = document.createElement('tr');
+
+            row.style.background = qualificationColor;
+
+            row.innerHTML = `
+
+                <td style="font-weight:700;">
+                    ${team.name}
+                </td>
+
+                <td style="color:var(--xeneize-gold-neon); font-weight:700;">
+                    ${team.points}
+                </td>
+
+                <td>
+                    ${team.gf}
+                </td>
+
+                <td>
+                    ${team.ga}
+                </td>
+
+                <td style="
+                    font-weight:700;
+                    color:${team.gd >= 0 ? '#00ffcc' : '#ff3333'};
+                ">
+                    ${team.gd}
+                </td>
+
+            `;
+
+            standingsBody.appendChild(row);
+
+        });
+
+    }
+
+    // =========================================================
+    // LIVE SCORE UPDATES
+    // =========================================================
+
+    libertadoresMatches.forEach(match => {
+
+        const inputs = match.querySelectorAll('input');
+
+        inputs.forEach(input => {
+
+            input.addEventListener('input', generateStandings);
+
+        });
+
+    });
+
+    // INITIAL LOAD
+
+    generateStandings();
+
+
+// --- CALCULATOR ENGINE (GLOBAL LOGIC) ---
+let calcExpression = "";
+
+function pressKey(key) {
+    const screen = document.getElementById('calc-screen');
+    if (screen.innerText === "0" && !isNaN(key)) {
+        calcExpression = key;
+    } else {
+        calcExpression += key;
+    }
+    updateScreen(calcExpression);
+}
+
+function clearScreen() {
+    calcExpression = "";
+    updateScreen("0");
+}
+
+function calculateResult() {
+    try {
+        if(calcExpression.trim() === "") return;
+        let result = new Function(`return ${calcExpression}`)();
+        calcExpression = String(result);
+        updateScreen(calcExpression);
+    } catch (error) {
+        updateScreen("ERROR");
+        calcExpression = "";
+    }
+}
+
+function updateScreen(val) {
+    document.getElementById('calc-screen').innerText = val;
+}
+</script>
+
+{% endblock %}
