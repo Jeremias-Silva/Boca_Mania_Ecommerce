@@ -1097,29 +1097,73 @@
         
         <div class="vault-row-card">
             <div class="vault-meta-text">
-                <div class="vault-header-node">
-                    <span class="vault-node-year">1977</span>
-                    <span class="vault-node-title">Copa Libertadores Final</span>
-                </div>
-                <p class="vault-paragraph">
-                  Boca Juniors faced Cruzeiro in a historic continental battle at the Estadio Centenario. After two closely contested matches, the tie was decided on penalties. The aggregate score ended 1–1. In the shootout, Hugo Gatti became the hero by saving Vanderlei’s decisive penalty. With this victory, Boca Juniors won its first Copa Libertadores and secured its place in South American football history.
-                </p>
-                <div class="roster-collapse">
-                    <div class="roster-title">Boca Juniors 1 x 0 Cruzeiro<b></br><br>(won on penalties 5–4)</b></div>
-                    <div class="roster-string"><b>Team Lineup:</b> Gatti; Pernía, Tesare, Mouzo, Tarantini; J. J. Benítez (Ribolzi), Suñé, Zanabria; Mastrángelo, Veglio (Pavón), Felman.<br>
-                    Coach: Juan Carlos Lorenzo.</div>
-                </div>
+               <!-- NAV BAR (Corrigida para não dar erro) -->
+<nav class="cyber-nav">
+    <a href="/" class="cyber-logo">BOCA<span>MANIA</span></a>
+
+    <div class="cyber-nav-links">
+        <div class="tech-dropdown">
+            <span class="tech-drop-trigger">// ACCESS</span>
+            <div class="tech-drop-menu">
+                <a href="/register">Create Account</a>
+                <!-- Alterado temporariamente para '#' para sumir o erro de rota -->
+                <a href="#">System Admin</a>
+                <a href="{% url 'user_login' %}">Member Login</a>
             </div>
-            <div class="vault-video-box">
-               <video id="v-1977l" autoplay loop playsinline muted>
-    <source src="{% static 'store/videos/BocaxCruzeiro.mp4https://youtu.be/4JpPBcjDuMA' %}" type="video/mp4">
-   </video>
-                <div class="vault-hud-mini">
-                    <button onclick="vaultEngine('play', 'v-1977l')" class="cyber-hud-btn">STREAM</button>
-                    <button onclick="vaultEngine('pause', 'v-1977l')" class="cyber-hud-btn">HOLD</button>
-                    <button onclick="vaultEngine('mute', 'v-1977l')" class="cyber-hud-btn">AUDIO</button>
-                </div>
-            </div>
+        </div>
+        <a href="/products">STORE</a>
+        <a href="/cart">CART</a>
+    </div>
+</nav>
+
+<!-- SEÇÃO DA COPA LIBERTADORES 1977 -->
+<section class="cyber-hero" style="display: flex; gap: 40px; align-items: center; max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+    
+    <!-- Painel de Texto (Lado Esquerdo) -->
+    <div class="hero-text-panel" style="flex: 1;">
+        <h1 style="color: #FFD700; font-family: monospace; font-size: 2.5rem; margin-bottom: 10px;">
+            1977 <span style="color: #fff; font-size: 1.2rem; letter-spacing: 2px;">COPA LIBERTADORES FINAL</span>
+        </h1>
+        
+        <p style="color: #a0aec0; line-height: 1.6; font-size: 0.95rem; margin-bottom: 20px;">
+            Boca Juniors faced Cruzeiro in a historic continental battle at the Estadio Centenario. After two closely contested matches, the tie was decided on penalties. The aggregate score ended 1-1. In the shootout, Hugo Gatti became the hero by saving Vanderlei's decisive penalty. With this victory, Boca Juniors won its first Copa Libertadores and secured its place in South American football history.
+        </p>
+
+        <!-- Caixa de Informações do Jogo -->
+        <div style="border: 1px dashed #FFD700; padding: 15px; background-color: rgba(0,0,0,0.2);">
+            <h3 style="color: #FFD700; font-size: 0.9rem; margin: 0 0 5px 0; font-family: monospace;">
+                BOCA JUNIORS 1 X 0 CRUZEIRO
+            </h3>
+            <h4 style="color: #FFD700; font-size: 0.8rem; margin: 0 0 10px 0; font-family: monospace;">
+                (WON ON PENALTIES 5-4)
+            </h4>
+            <p style="color: #fff; font-size: 0.8rem; margin: 0; line-height: 1.4;">
+                <strong style="color: #a0aec0;">Team Lineup:</strong> Gatti; Pernía, Tesare, Mouzo, Tarantini; J. J. Benítez (Ribolzi), Suñé, Zanabria; Mastrángelo, Veglio (Pavón), Felman.<br>
+                <strong style="color: #a0aec0;">Coach:</strong> Juan Carlos Lorenzo.
+            </p>
+        </div>
+    </div>
+
+    <!-- Quadro do Vídeo (Lado Direito - Substituindo o quadro preto da imagem) -->
+    <div class="hero-video-panel" style="flex: 1; position: relative; background: #000; border: 1px solid #333; display: flex; flex-direction: column;">
+        
+        <!-- O VÍDEO COM AUTOPLAY E SEM SOM -->
+        <div style="width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #000;">
+            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+                <source src="{% static 'store/videos/BocaxCruzeiro.mp4' %}" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+            </video>
+        </div>
+
+        <!-- Botões de Controle Inferiores (Stream, Hold, Audio) -->
+        <div style="display: flex; gap: 10px; padding: 15px; background: #000;">
+            <button style="background: transparent; border: 2px solid #0055ff; color: #fff; padding: 5px 15px; font-family: monospace; font-weight: bold; font-size: 0.8rem; cursor: pointer; box-shadow: 0 0 10px rgba(0,85,255,0.5);">STREAM</button>
+            <button style="background: transparent; border: 1px solid #fff; color: #fff; padding: 5px 15px; font-family: monospace; font-size: 0.8rem; cursor: pointer;">HOLD</button>
+            <button style="background: transparent; border: 1px solid #fff; color: #fff; padding: 5px 15px; font-family: monospace; font-size: 0.8rem; cursor: pointer;">AUDIO</button>
+        </div>
+    </div>
+
+</section>
         </div>
 
         <div class="vault-row-card">
