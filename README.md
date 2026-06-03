@@ -1,9 +1,4 @@
 # 💙💛 Boca Mania - Full-Stack E-Commerce
-
-<p align="center">
-  <img src="assets/demonstracao.gif" alt="Boca Mania Demo" width="100%">
-</p>
-
 ---
 
 ## 📌 About the Project

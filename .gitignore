@@ -1,1 +1,3 @@
 store/static/store/videos/*.mp4
+venv/
+.DS_Store
