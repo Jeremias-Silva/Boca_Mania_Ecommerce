@@ -17,7 +17,7 @@ This ecosystem was built from scratch, applying web development best practices, 
 *   **Administrative Dashboard:** Internal interface for inventory management, order tracking, and user control.
 *   **Responsive Design:** Fully optimized interface for mobile devices, tablets, and desktops.
 
----
+--
 
 ## 🛠️ Technologies Used
 
