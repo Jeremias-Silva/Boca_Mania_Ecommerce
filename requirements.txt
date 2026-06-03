@@ -4,4 +4,6 @@ sqlparse==0.5.5
 gunicorn
 dj-database-url
 psycopg2-binary
-whitenoise       
+whitenoise
+folium
+branca
