@@ -1148,23 +1148,16 @@
                     </div>
                 </div>
             </div>
-            <div class="vault-video-box" style="position: relative;">
-
-    <iframe
-        src="https://www.youtube.com/embed/4JpPBcjDuMA?autoplay=1&mute=1&loop=1&playlist=4JpPBcjDuMA"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        style="position:absolute; top:0; left:0; width:100%; height:100%;">
-    </iframe>
-
-    <div class="vault-hud-mini">
-        <button onclick="vaultEngine('play', 'v-1977l')" class="cyber-hud-btn">STREAM</button>
-        <button onclick="vaultEngine('pause', 'v-1977l')" class="cyber-hud-btn">HOLD</button>
-        <button onclick="vaultEngine('mute', 'v-1977l')" class="cyber-hud-btn">AUDIO</button>
-    </div>
-
-</div>
+            <div class="vault-video-box">
+                <video id="v-1977m" autoplay loop playsinline muted>
+                    <source src="{% static 'store/videos/BocaCampeonMundial1977.mp4' %}" type="video/mp4">
+                </video>
+                <div class="vault-hud-mini">
+                    <button onclick="vaultEngine('play', 'v-1977m')" class="cyber-hud-btn">STREAM</button>
+                    <button onclick="vaultEngine('pause', 'v-1977m')" class="cyber-hud-btn">HOLD</button>
+                    <button onclick="vaultEngine('mute', 'v-1977m')" class="cyber-hud-btn">AUDIO</button>
+                </div>
+            </div>
         </div>
 
         <div class="vault-row-card">
